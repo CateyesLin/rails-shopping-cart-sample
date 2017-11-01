@@ -39,6 +39,8 @@ gem 'devise'
 # JSON API lib
 gem 'grape'
 
+gem 'bootstrap-sass', '~> 3.2.0'
+gem 'autoprefixer-rails'
 
 
 group :development, :test do
