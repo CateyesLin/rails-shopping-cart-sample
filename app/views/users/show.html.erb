@@ -1,14 +1,27 @@
 <p id="notice"><%= notice %></p>
 
+<h3>個人資料</h3>
 <ul>
   <li>Email: <%= @user.email %></li>
   <li>Name: <%= @user.name %></li>
 </ul>
+<%= link_to '編輯個人資料', edit_user_path(@user.id), class: 'btn btn-primary btn-xs' %>
 
-<h3>送貨資訊</h3>
+
+<h3>收件人資訊</h3>
+<%= link_to '新增收件人資訊', new_user_receiver_path(@user.id), class: 'btn btn-primary btn-xs' %>
 <ul>
-  <li>111</li>
-  <li>222</li>
+<% @user.receivers.each do |receiver| %>
+  <li>
+    <div>姓名: <%= receiver.name %></div>
+    <div>電話：<%= receiver.phone %></div>
+    <div>地址：<%= receiver.address %></div>
+    <div>
+      <%= link_to '編輯', edit_user_receiver_path(@user.id, receiver.id), class: 'btn btn-info btn-xs' %>
+      <%= link_to '刪除', user_receiver_path(@user.id, receiver.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs' %>
+    </div>
+
+  </li>
+<% end %>
 </ul>
 
-<%= link_to '編輯', edit_user_path(@user.id) %>

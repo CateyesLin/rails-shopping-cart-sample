@@ -1,4 +1,5 @@
 class ReceiversController < ApplicationController
+  before_action :set_user
   before_action :set_receiver, only: [:show, :edit, :update, :destroy]
 
   # GET /receivers
@@ -24,11 +25,19 @@ class ReceiversController < ApplicationController
   # POST /receivers
   # POST /receivers.json
   def create
-    @receiver = Receiver.new(receiver_params)
+    if not is_self?
+        format.html { render :new }
+        format.json { render json: @receiver.errors, status: :unprocessable_entity }
+        return
+    end
+
+    @receiver = Receiver.new(receiver_params.merge(
+      user_id: @user.id
+    ))
 
     respond_to do |format|
       if @receiver.save
-        format.html { redirect_to @receiver, notice: 'Receiver was successfully created.' }
+        format.html { redirect_to @user, notice: 'Receiver was successfully created.' }
         format.json { render :show, status: :created, location: @receiver }
       else
         format.html { render :new }
@@ -40,9 +49,15 @@ class ReceiversController < ApplicationController
   # PATCH/PUT /receivers/1
   # PATCH/PUT /receivers/1.json
   def update
+    if not is_self?
+        format.html { render :edit }
+        format.json { render json: @receiver.errors, status: :unprocessable_entity }
+        return
+    end
+
     respond_to do |format|
       if @receiver.update(receiver_params)
-        format.html { redirect_to @receiver, notice: 'Receiver was successfully updated.' }
+        format.html { redirect_to @user, notice: 'Receiver was successfully updated.' }
         format.json { render :show, status: :ok, location: @receiver }
       else
         format.html { render :edit }
@@ -54,9 +69,13 @@ class ReceiversController < ApplicationController
   # DELETE /receivers/1
   # DELETE /receivers/1.json
   def destroy
+    if not is_self?
+      return
+    end
+
     @receiver.destroy
     respond_to do |format|
-      format.html { redirect_to receivers_url, notice: 'Receiver was successfully destroyed.' }
+      format.html { redirect_to @user, notice: 'Receiver was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -64,11 +83,19 @@ class ReceiversController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_receiver
-      @receiver = Receiver.find(params[:id])
+      @receiver = @user.receivers.find(params[:id])
+    end
+
+    def set_user
+      @user = User.find(params[:user_id])
+    end
+
+    def is_self?
+      current_user.id == @user.id
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def receiver_params
-      params.require(:receiver).permit(:user_id, :name, :phone, :address)
+      params.require(:receiver).permit(:name, :phone, :address)
     end
 end
