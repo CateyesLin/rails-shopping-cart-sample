@@ -1,6 +1,6 @@
 # 規格
 
-- 每個使用者只會有一個購物車，以 session 儲存。
+- 每個使用者只會有一個購物車，先以 session 儲存。
 
 ## DB Schema
 
@@ -24,13 +24,12 @@
 
 ### orders
 
-| Column      | Type     | Description                     |
-| ----------- | -------- | ------------------------------- |
-| id          | integer  |                                 |
-| user_id     | integer  |                                 |
-| receiver_id | integer  |                                 |
-| payment     | tiny_int | 1: 信用卡, 2: ATM 匯款               |
-| status      | tiny_int | 1: 未付款, 2: 已付款, 3: 已出貨, -1: 已取消 |
+| Column      | Type     | Description                             |
+| ----------- | -------- | --------------------------------------- |
+| id          | integer  |                                         |
+| receiver_id | integer  |                                         |
+| payment     | tiny_int | 1: 信用卡, 2: ATM 匯款                       |
+| status      | tiny_int | 1: 未付款, 2: 已付款, 3: 已出貨, 4: 已完成, -1: 已取消 |
 
 
 ### order_products
@@ -38,10 +37,10 @@
 | Column     | Type    | Description |
 | ---------- | ------- | ----------- |
 | id         | integer |             |
-| product_id | integer |             |
 | order_id   | integer |             |
+| product_id | integer |             |
+| pricing    | decimal |             |
 | amount     | integer |             |
-| pricing    | integer |             |
 
 
 ### products
@@ -49,8 +48,7 @@
 | Column       | Type    | Description |
 | ------------ | ------- | ----------- |
 | id           | integer |             |
-| name         |         |             |
-| pricing      |         |             |
-| descriptions |         |             |
-| amount       |         |             |
+| name         | string  |             |
+| pricing      | decimal |             |
+| descriptions | text    |             |
 
