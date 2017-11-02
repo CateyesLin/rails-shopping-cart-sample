@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   root 'products#index'
 
+  mount API::Base => '/api'
+
   devise_for :users
   resources :users do
     resources :receivers
