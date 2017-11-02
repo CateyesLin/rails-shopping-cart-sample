@@ -24,12 +24,12 @@
 
 ### orders
 
-| Column      | Type     | Description                             |
-| ----------- | -------- | --------------------------------------- |
-| id          | integer  |                                         |
-| receiver_id | integer  |                                         |
-| payment     | tiny_int | 1: 信用卡, 2: ATM 匯款                       |
-| status      | tiny_int | 1: 未付款, 2: 已付款, 3: 已出貨, 4: 已完成, -1: 已取消 |
+| Column      | Type     | Description                            |
+| ----------- | -------- | -------------------------------------- |
+| id          | integer  |                                        |
+| receiver_id | integer  |                                        |
+| payment     | tiny_int | 1: 信用卡, 2: ATM 匯款                      |
+| status      | tiny_int | 1: 未付款, 2: 已付款, 3: 已出貨, 4: 已完成, 0: 已取消 |
 
 
 ### order_products

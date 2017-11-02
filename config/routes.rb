@@ -10,7 +10,12 @@ Rails.application.routes.draw do
 
   resource :me, controller: 'me'
 
-  resources :orders
+  resources :orders do
+    member do
+      patch  'delivery'
+      delete 'cancel'
+    end
+  end
   resources :products
   resources :order_products
 

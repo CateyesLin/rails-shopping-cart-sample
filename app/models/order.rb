@@ -30,4 +30,12 @@ class Order < ApplicationRecord
     end
   end
 
+  def can_delivery?
+    2 == self.status
+  end
+
+  def can_cancel?
+    self.status.between?(1, 2)
+  end
+
 end

@@ -5,4 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :receivers
+
+  def is_admin?
+    100 <= self.role
+  end
 end
