@@ -24,13 +24,37 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-    @order = Order.new(order_params)
+    @order = Order.new(order_params.merge(
+      payment: 1,
+      status: 2
+    ))
+
+    if nil == current_user.receivers.find(@order.receiver_id)
+      format.html { render :new }
+      format.json { render json: @order.errors, status: :unprocessable_entity }
+      return
+    end
 
     respond_to do |format|
-      if @order.save
-        format.html { redirect_to @order, notice: 'Order was successfully created.' }
+      begin
+        Order.transaction do
+          @order.save!
+          @cart.items.each do |item|
+            to_buy = OrderProduct.new(
+              order_id: @order.id,
+              product_id: item.product_id,
+              pricing: item.pricing,
+              amount: item.amount
+            )
+            to_buy.save
+          end
+        end
+
+        session[:cart] = nil
+
+        format.html { redirect_to user_path(current_user.id), notice: 'Order was successfully created.' }
         format.json { render :show, status: :created, location: @order }
-      else
+      rescue ActiveRecord::RecordInvalid => invalid
         format.html { render :new }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
@@ -69,6 +93,6 @@ class OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:receiver_id, :payment, :status)
+      params.require(:order).permit(:receiver_id)
     end
 end

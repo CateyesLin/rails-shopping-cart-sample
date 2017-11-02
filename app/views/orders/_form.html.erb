@@ -13,17 +13,7 @@
 
   <div class="field">
     <%= form.label :receiver_id %>
-    <%= form.number_field :receiver_id, id: :order_receiver_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :payment %>
-    <%= form.number_field :payment, id: :order_payment %>
-  </div>
-
-  <div class="field">
-    <%= form.label :status %>
-    <%= form.number_field :status, id: :order_status %>
+    <%= form.collection_select :receiver_id, current_user.receivers, :id, :address, include_blank: false %>
   </div>
 
   <div class="actions">

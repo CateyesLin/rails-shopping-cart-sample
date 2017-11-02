@@ -25,5 +25,23 @@
 <% end %>
 </ul>
 
-<%= render 'cart/show' %>
-
+<h3>訂單列表</h3>
+<ul>
+<% @user.receivers.each do |receiver| %>
+  <% receiver.orders.each do |order| %>
+  <li>
+    <h4>訂單編號 <%= order.id%> (<%= order.status_name%> <%= order.payment_name %>)</h4>
+    <h5>訂單內容</h5>
+    <div>
+    <% order.order_products.each do |item| %>
+      <p><%= item.product.name %> <%= number_to_currency(item.pricing, precision: 0) %>元 X <%= item.amount %>件</p>
+    <% end %>
+    </div>
+    <h5>收件人資訊</h5>
+    <div>
+      <%= order.receiver.name %> <%= order.receiver.phone %> <%= order.receiver.address %>
+    </div>
+  </li>
+  <% end %>
+<% end %>
+</ul>

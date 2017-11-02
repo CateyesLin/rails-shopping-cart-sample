@@ -5,14 +5,12 @@ Rails.application.routes.draw do
 
   devise_for :users
   resources :users do
-    resources :receivers do
-      resources :orders
-    end
+    resources :receivers
   end
 
   resource :me, controller: 'me'
 
-  resources :orders, only: [:index, :show, :edit, :update, :destroy]
+  resources :orders
   resources :products
   resources :order_products
 

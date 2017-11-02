@@ -6,4 +6,10 @@
 <% end %>
 </ul>
 
-<%= link_to '清空', cart_path, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs' %>
+<% if 0 != @cart.items.length %>
+  <%= link_to '清空', cart_path, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs' %>
+
+  <% if current_user  %>
+    <%= link_to '結帳', new_order_path, class: 'btn btn-success btn-xs' %>
+  <% end %>
+<% end %>

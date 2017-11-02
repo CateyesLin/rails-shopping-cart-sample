@@ -3,7 +3,7 @@ class CartsController < ApplicationController
     current_cart.add_item(params[:id])
     session[:cart] = current_cart.serialize
 
-    redirect_to session.delete(:return_to), notice: "已加入購物車"
+    redirect_to products_path, notice: "已加入購物車"
   end
 
   def destroy
