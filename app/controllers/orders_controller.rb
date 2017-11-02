@@ -52,6 +52,8 @@ class OrdersController < ApplicationController
 
         session[:cart] = nil
 
+        OrderMailer.order_created_mail(@order).deliver_later
+
         format.html { redirect_to user_path(current_user.id), notice: 'Order was successfully created.' }
         format.json { render :show, status: :created, location: @order }
       rescue ActiveRecord::RecordInvalid => invalid
