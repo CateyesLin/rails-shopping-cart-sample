@@ -18,4 +18,36 @@ class ApplicationController < ActionController::Base
   def save_referer
     session[:return_to] ||= request.referer
   end
+
+  def member_required
+    if current_user.blank?
+      respond_to do |format|
+        format.html {
+          redirect_to root_path, notice: 'unauthorized user'
+        }
+        format.json {
+        }
+        format.all {
+          head(:unauthorized)
+        }
+      end
+    end
+  end
+
+  def admin_required
+    if current_user.blank? || current_user.role < 100
+      respond_to do |format|
+        format.html {
+          #authenticate_user!
+          redirect_to root_path, notice: 'unauthorized admin'
+        }
+        format.json {
+        }
+        format.all {
+          head(:unauthorized)
+        }
+      end
+    end
+  end
+
 end

@@ -1,6 +1,8 @@
 class OrdersController < ApplicationController
   include NumberHelper
 
+  before_action :member_required, only: [:show, :new, :create, :destroy, :cancel]
+  before_action :admin_required, only: [:index, :edit, :update, :delivery]
   before_action :set_order, only: [:show, :edit, :update, :destroy, :delivery, :cancel]
 
   # GET /orders

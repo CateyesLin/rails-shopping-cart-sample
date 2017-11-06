@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :member_required, only: [:show, :edit, :update, :destroy]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def show

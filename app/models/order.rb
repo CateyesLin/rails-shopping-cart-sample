@@ -12,7 +12,7 @@ class Order < ApplicationRecord
       '已出貨'
     when 4
       '已完成'
-    when -1
+    when 0
       '已取消'
     else
       '未知狀態'

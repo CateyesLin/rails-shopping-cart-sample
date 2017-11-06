@@ -10,8 +10,6 @@ Rails.application.routes.draw do
     resources :receivers
   end
 
-  resource :me, controller: 'me'
-
   resources :orders do
     member do
       patch  'delivery'
@@ -19,7 +17,6 @@ Rails.application.routes.draw do
     end
   end
   resources :products
-  resources :order_products
 
   resource :cart, only:[:show, :destroy] do
     collection do

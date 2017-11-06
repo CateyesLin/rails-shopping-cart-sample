@@ -1,4 +1,5 @@
 class ReceiversController < ApplicationController
+  before_action :member_required
   before_action :set_user
   before_action :set_receiver, only: [:show, :edit, :update, :destroy]
 
@@ -25,15 +26,7 @@ class ReceiversController < ApplicationController
   # POST /receivers
   # POST /receivers.json
   def create
-    if not is_self?
-        format.html { render :new }
-        format.json { render json: @receiver.errors, status: :unprocessable_entity }
-        return
-    end
-
-    @receiver = Receiver.new(receiver_params.merge(
-      user_id: @user.id
-    ))
+    @receiver = current_user.receivers.new(receiver_params)
 
     respond_to do |format|
       if @receiver.save
@@ -49,12 +42,6 @@ class ReceiversController < ApplicationController
   # PATCH/PUT /receivers/1
   # PATCH/PUT /receivers/1.json
   def update
-    if not is_self?
-        format.html { render :edit }
-        format.json { render json: @receiver.errors, status: :unprocessable_entity }
-        return
-    end
-
     respond_to do |format|
       if @receiver.update(receiver_params)
         format.html { redirect_to @user, notice: 'Receiver was successfully updated.' }
@@ -83,7 +70,7 @@ class ReceiversController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_receiver
-      @receiver = @user.receivers.find(params[:id])
+      @receiver = current_user.receivers.find(params[:id])
     end
 
     def set_user
