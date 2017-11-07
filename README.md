@@ -1,24 +1,54 @@
-# README
+# 規格
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+- 每個使用者只會有一個購物車，先以 session 儲存。
 
-Things you may want to cover:
+## DB Schema
 
-* Ruby version
+### users
 
-* System dependencies
+| Column     | Type    | Description |
+| ---------- | ------- | ----------- |
+| id         | integer |             |
+| name       | string  |             |
+| auth_token | string  |             |
 
-* Configuration
+### receivers
 
-* Database creation
+| Column  | Type    | Description |
+| ------- | ------- | ----------- |
+| id      | integer |             |
+| user_id | integer |             |
+| name    | string  |             |
+| phone   | string  |             |
+| address | string  |             |
 
-* Database initialization
+### orders
 
-* How to run the test suite
+| Column      | Type     | Description                            |
+| ----------- | -------- | -------------------------------------- |
+| id          | integer  |                                        |
+| receiver_id | integer  |                                        |
+| payment     | tiny_int | 1: 信用卡, 2: ATM 匯款                      |
+| status      | tiny_int | 1: 未付款, 2: 已付款, 3: 已出貨, 4: 已完成, 0: 已取消 |
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+### order_products
 
-* ...
+| Column     | Type    | Description |
+| ---------- | ------- | ----------- |
+| id         | integer |             |
+| order_id   | integer |             |
+| product_id | integer |             |
+| pricing    | decimal |             |
+| amount     | integer |             |
+
+
+### products
+
+| Column       | Type    | Description |
+| ------------ | ------- | ----------- |
+| id           | integer |             |
+| name         | string  |             |
+| pricing      | decimal |             |
+| descriptions | text    |             |
+
