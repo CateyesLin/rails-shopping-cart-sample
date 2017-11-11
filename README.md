@@ -15,6 +15,7 @@
 | ---------- | ------- | ----------- |
 | id         | integer |             |
 | name       | string  |             |
+| role       | integer |             |
 | auth_token | string  |             |
 
 ### receivers
